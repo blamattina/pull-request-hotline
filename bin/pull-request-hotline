@@ -21,9 +21,9 @@ function failure(e) {
 function runCommand(args) {
   debug('Running cli command with: ', args);
   var pullRequestHotline = new PullRequestHotline();
-  if (args.subcommand_name === 'code-review') {
+  if (args.commandName === 'code-review') {
     return pullRequestHotline.codeReviewComment(args);
-  } else if (args.subcommand_name === 'issue-comment') {
+  } else if (args.commandName === 'issue-comment') {
     return pullRequestHotline.issueComment(args);
   }
   debug('Exiting...');
