@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+var _ = require('lodash')
+var PullRequestHotline = require('../index');
+var debug = require('debug')('pull-request-hotline:cli');
+
+function success(result) {
+  console.log('Message Sent.');
+  if (result && result.length && result.length !== 0) {
+    console.log(result);
+  }
+}
+
+function failure(e) {
+  console.log('Error:');
+  if (e) {
+    console.log(e.message ? e.message : e);
+  }
+  process.exit(1);
+}
+
+function runCommand(args) {
+  debug('Running cli command with: ', args);
+  var pullRequestHotline = new PullRequestHotline();
+  if (args.subcommand_name === 'code-review') {
+    return pullRequestHotline.codeReviewComment(args);
+  } else if (args.subcommand_name === 'issue-comment') {
+    return pullRequestHotline.issueComment(args);
+  }
+  debug('Exiting...');
+}
+
+var args = require('../lib/arg-parser').parseArgs();
+args.body = args.body.join(' ');
+runCommand(args).done(success, failure)
+
